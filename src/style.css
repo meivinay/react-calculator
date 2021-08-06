@@ -1,81 +1,101 @@
 *{
     box-sizing: border-box;
+    
 }
 body{
     margin:0;
-    font-size: 2rem;
+    
+}
+#root{
     height: 100vh;
-    width: 100vw;
+    width: 100vw; 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .calculator-container{
-    height: 25rem;
-    width: 20rem;
+    height: 80%;
+    width: 30%;
     border: 1px solid;
+    border-radius: 1rem;
 }
-.view{
-    height: 10%;
+.header{
+    height: 20%;
     width: 100%;
+}
+.view,.output{
+    height: 50%;
+    width: 100%; 
     text-align: end;
 }
-.output{
-    height: 10%;
-    width: 100%;
-    border-bottom: 1px solid;
 
-}
 .keypad-container{
     height: 80%;
     width: 100%;    
     display: flex;
-    justify-content: space-around;
+    flex-direction: row;
+    border-radius: 1rem;
+    /* background-color: black; */
+}
+.keypad-row{
+display: flex;
+flex-direction: column;
+width: 80%;
+}
+.keypad-column{
+display: flex;
+flex-direction: row;
+width: 20%;
+justify-content: space-around;
 }
 .operand-container{
-height: 100%;
-width: 80%;
+height: 85%;
+width: 100%;
 display: flex;
 flex-direction: column;     
 align-items: center;
-background-color: rgba(108, 196, 174, 0.733);
+justify-content: space-evenly;
 }
-.operand-container div{
-    height: 25%;
+#row-1,#row-2,#row-3{
+    height: 4rem;
     width: 100%;
     display: flex;
-    justify-content: space-evenly;
-}
-.operand-container button{
-    height: 4rem;
-    width: 4rem;
+    align-items: center;
+    justify-content: space-around;
+
 }
 .operator-container{
-height: 100%;
-width: 20%;
-display: flex;
-flex-direction: column;
-align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 1rem;
 }
-.operator-container button{
+.horizontal-operators{
+    display: flex;
+    justify-content: space-around;
     width: 100%;
     height: 15%;
-    flex-grow: 1;
 }
 button{
-    font-size: 1.5rem;
+    height: 4rem;
+    width: 4rem;
+    min-height: 4rem;
+    min-width: 4rem;
     outline: none;
     border: none;
     font-weight: bold;
+    background-color: white;
+    /* text-align: center; */
+    font-size: 2.5rem;
 }
-.operator-container button:hover{
+.operator:hover{
     background-color: rgb(78, 224, 205);
 }
 .operand-container button:hover{
     background-color: rgb(206, 206, 206);
 }
 #reset{
-    font-size: 1rem;
     font-weight: bold;
 }
 #reset:hover{
