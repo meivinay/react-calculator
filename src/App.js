@@ -14,13 +14,13 @@ class App extends React.Component{
     result:""
   }
 evaluate=()=>{
-  console.log(this.state.stmt);
-  console.log(this.state.operator);
-  console.log(this.state.operand);
+  // console.log(this.state.stmt);
+  // console.log(this.state.operator);
+  // console.log(this.state.operand);
   let b = this.state.operand.pop();
   let a = this.state.operand.pop();
   let op = this.state.operator.pop();
-  let prevRes = this.state.result;
+  // let prevRes = this.state.result;
   if(op==="+"){
     return (a+b);
   }
