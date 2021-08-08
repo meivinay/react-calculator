@@ -7,20 +7,54 @@ import VerticalOperatorPad from "./VerticalOperatorPad";
 class App extends React.Component{
   state = {
     stmt:[],
-    operator:[],
-    operand:[],
     isPrevNumNAN:undefined,
     posNeg:1,
     result:""
   }
-evaluate=()=>{
-  // console.log(this.state.stmt);
-  // console.log(this.state.operator);
-  // console.log(this.state.operand);
-  let b = this.state.operand.pop();
-  let a = this.state.operand.pop();
-  let op = this.state.operator.pop();
-  // let prevRes = this.state.result;
+infixEvaluate=()=>{
+  console.log(this.state.operand);
+  console.log(this.state.operator);
+
+  let operator = [];
+  let operand = [];
+  for(let ch in this.state.stmt){
+    if(isNaN(this.state.stmt[ch]) === false){
+      let integer = parseInt(this.state.stmt[ch]);
+      operand.push(integer);  
+    }
+    else{
+    while(operator.length>0 && this.oprPriority(operator[operator.length-1])>= this.oprPriority(this.state.stmt[ch])){
+      let b = operand.pop();
+      let a = operand.pop();
+      let op = operator.pop();
+      let res = this.evaluate(a,op,b);
+      operand.push(res);
+    }
+    operator.push(this.state.stmt[ch]);
+  }
+  }
+  while(operator.length>0){
+    let b = operand.pop();
+    let a = operand.pop();
+    let op = operator.pop();
+    let res = this.evaluate(a,op,b);
+    operand.push(res);
+  }
+  
+ return operand.pop();
+}
+oprPriority = (opr)=>{
+  if(opr ==="*" || opr === "/" || opr === "%"){
+    return 1;
+  }
+  else if (opr ==="+" || opr==="-") {
+    return 0;
+  }
+  else{
+    return -1;
+  }
+}
+evaluate = (a,op,b)=>{
   if(op==="+"){
     return (a+b);
   }
@@ -38,27 +72,27 @@ evaluate=()=>{
   }
 }
 partialReset=()=>{
-  this.setState({stmt:[],operator:[],operand:[],isPrevNumNAN:true,posNeg:1});
+  this.setState({stmt:[],isPrevNumNAN:true,posNeg:1});
 }
 fullReset = ()=>{
-  this.setState({stmt:[],operand:[],operator:[],result:"",isPrevNumNAN:true,posNeg:1});
+  this.setState({stmt:[],result:"",isPrevNumNAN:true,posNeg:1});
 }
 handleNumKeys = (value)=>{
   if(this.state.isPrevNumNAN === false){
     let lastNum = this.state.operand.pop();
     let newNum = (lastNum*10+value)*this.state.posNeg;
     console.log(newNum +"mul val");
-      this.setState({stmt:[...this.state.stmt,value],operand:[...this.state.operand,newNum],isPrevNumNAN:false,posNeg:1})
+      this.setState({stmt:[...this.state.stmt,value],isPrevNumNAN:false,posNeg:1})
   }
   else{
     console.log("single val");
     value = value*this.state.posNeg;
-    this.setState({stmt:[...this.state.stmt,value],operand:[...this.state.operand,value],isPrevNumNAN:false,posNeg:1})
+    this.setState({stmt:[...this.state.stmt,value],isPrevNumNAN:false,posNeg:1})
   }
 }
 handleOperatorKeys = (op)=>{
   if(this.state.isPrevNumNAN === false){
-    this.setState({stmt:[...this.state.stmt,op],operator:[...this.state.operator,op],isPrevNumNAN:true});
+    this.setState({stmt:[...this.state.stmt,op],isPrevNumNAN:true});
   }
   else {
     alert("Please Enter Valid input"); 
@@ -75,8 +109,10 @@ handlePosNeg= ()=>{
   }
 }
 handleEvalAction = ()=>{
-  let res = this.evaluate();
-  this.setState({result:res})
+  let res = this.infixEvaluate();
+  console.log(res)
+  this.setState({result:res});
+  console.log("after re-render");
   this.partialReset();
 }
 handleResetAction = ()=>{
