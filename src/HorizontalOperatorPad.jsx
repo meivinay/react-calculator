@@ -4,7 +4,7 @@ let HorizontalOperatorPad = (props)=>{
          <button id ="reset"onClick={()=>{
             props.handleResetAction();
         }}>C</button>
-        <button className = "operator" onClick = {()=>{
+        <button className = "operator" id="pos-neg"onClick = {()=>{
           props.handlePosNeg();
         }}>+/-</button>
         <button className = "operator" onClick ={()=>{

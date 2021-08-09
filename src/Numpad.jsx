@@ -38,13 +38,9 @@ let Numpad = (props)=>{
        props.handleNumKeys(9);
      }}>9</button>
    </div>
-   <div className="zeros">
-     <button>00</button>
    <button onClick ={()=>{
        props.handleNumKeys(0);
      }}>0</button>
-     <button>.</button>
-   </div>
    </div>
  )
  }

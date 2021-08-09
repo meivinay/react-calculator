@@ -7,20 +7,19 @@ import VerticalOperatorPad from "./VerticalOperatorPad";
 class App extends React.Component{
   state = {
     stmt:[],
+    operator:[],
+    operand:[],
     isPrevNumNAN:undefined,
     posNeg:1,
     result:""
   }
 infixEvaluate=()=>{
-  console.log(this.state.operand);
-  console.log(this.state.operator);
-
   let operator = [];
   let operand = [];
   for(let ch in this.state.stmt){
     if(isNaN(this.state.stmt[ch]) === false){
       let integer = parseInt(this.state.stmt[ch]);
-      operand.push(integer);  
+      operand.push(integer); 
     }
     else{
     while(operator.length>0 && this.oprPriority(operator[operator.length-1])>= this.oprPriority(this.state.stmt[ch])){
@@ -39,8 +38,7 @@ infixEvaluate=()=>{
     let op = operator.pop();
     let res = this.evaluate(a,op,b);
     operand.push(res);
-  }
-  
+  } 
  return operand.pop();
 }
 oprPriority = (opr)=>{
@@ -71,28 +69,27 @@ evaluate = (a,op,b)=>{
     return(a%b);
   }
 }
-partialReset=()=>{
-  this.setState({stmt:[],isPrevNumNAN:true,posNeg:1});
+partialReset=(res)=>{
+  this.setState({stmt:[],operator:[],operand:[res],isPrevNumNAN:false,posNeg:1});
 }
 fullReset = ()=>{
-  this.setState({stmt:[],result:"",isPrevNumNAN:true,posNeg:1});
+  this.setState({stmt:[],operand:[],operator:[],result:"",isPrevNumNAN:true,posNeg:1});
 }
 handleNumKeys = (value)=>{
   if(this.state.isPrevNumNAN === false){
     let lastNum = this.state.operand.pop();
+    this.state.stmt.pop();  
     let newNum = (lastNum*10+value)*this.state.posNeg;
-    console.log(newNum +"mul val");
-      this.setState({stmt:[...this.state.stmt,value],isPrevNumNAN:false,posNeg:1})
+      this.setState({stmt:[...this.state.stmt,newNum],operand:[...this.state.operand,newNum],isPrevNumNAN:false,posNeg:1})
   }
   else{
-    console.log("single val");
     value = value*this.state.posNeg;
-    this.setState({stmt:[...this.state.stmt,value],isPrevNumNAN:false,posNeg:1})
+    this.setState({stmt:[...this.state.stmt,value],operand:[...this.state.operand,value],isPrevNumNAN:false,posNeg:1})
   }
 }
 handleOperatorKeys = (op)=>{
   if(this.state.isPrevNumNAN === false){
-    this.setState({stmt:[...this.state.stmt,op],isPrevNumNAN:true});
+    this.setState({stmt:[...this.state.stmt,op],operator:[...this.state.operator,op],isPrevNumNAN:true});
   }
   else {
     alert("Please Enter Valid input"); 
@@ -110,10 +107,12 @@ handlePosNeg= ()=>{
 }
 handleEvalAction = ()=>{
   let res = this.infixEvaluate();
-  console.log(res)
-  this.setState({result:res});
-  console.log("after re-render");
-  this.partialReset();
+  this.setState({stmt:[res],operator:[],operand:[res],result:res,isPrevNumNAN:false,posNeg:1},()=>{
+    console.log("after eval");
+    console.log("stmtm => "+this.state.stmt);
+    console.log("operand=> "+this.state.operand);
+    console.log("operator=> "+this.state.operator);
+  });
 }
 handleResetAction = ()=>{
   this.fullReset();
@@ -128,6 +127,9 @@ handleResetAction = ()=>{
         <div className="output">
             {this.state.result}
           </div>
+          </div>
+          <div className="option">
+            <div className="line" ></div>
         </div>
 
         <div className="keypad-container">
@@ -148,7 +150,6 @@ handleResetAction = ()=>{
         </div>
     )
   }
-
 }
 
 export default App

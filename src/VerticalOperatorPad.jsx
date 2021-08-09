@@ -13,7 +13,7 @@ return(
   <button className = "operator" onClick = {()=>{
     props.handleOperatorKeys("-");
   }}>-</button>
-  <button className = "operator" onClick = {()=>{
+  <button className = "operator" id="evaluate" onClick = {()=>{
    props.handleEvalAction();
   }}>=</button>
 </div>
